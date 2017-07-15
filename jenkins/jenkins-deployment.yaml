@@ -1,0 +1,31 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: jenkins-leader
+  labels:
+    name: jenkins-leader
+  namespace: jenkins
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: jenkins-leader
+    spec:
+      containers:
+      - name: jenkins-leader
+        image: csanchez/jenkins-kubernetes
+        ports:
+        - name: ui
+          containerPort: 8080
+        - name: service
+          containerPort: 50000
+        volumeMounts:
+        - mountPath: /var/jenkins_home
+          name: jenkinshome
+      volumes:
+        - name: jenkinshome
+          hostPath:
+            path: /jenkins/data # 使用hostPath把数据挂载到本机硬盘中，后期改进为nfs存储
+      nodeSelector:
+        kubernetes.io/hostname: ci-k8s-node-1 # 把pod调度到固定的node上，使用命令获取node label ：kubectl get node --show-labels
