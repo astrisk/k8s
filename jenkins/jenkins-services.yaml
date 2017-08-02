@@ -26,7 +26,7 @@
       - protocol: TCP
         port: 8080
         targetPort: 8080
-        nodePort: 38080 #指定集群外部通过node端口访问UI服务 
+        nodePort: 31357 #指定集群外部通过node端口访问UI服务 
         name: ui
 # [END jenkins_service_ui]
 # [START jenkins_service_discovery]
@@ -44,5 +44,6 @@
       - protocol: TCP
         port: 50000
         targetPort: 50000
+        nodePort: 50000 
         name: slaves
 # [END jenkins_service_discovery]
