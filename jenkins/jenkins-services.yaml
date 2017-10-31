@@ -12,38 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # [START jenkins_service_ui]
+# 使用一个service，在Jenkins中可以通过域名http://jenkins.jenkins:8080连接master和slave
 ---
   kind: Service
   apiVersion: v1
   metadata:
-    name: jenkins-ui
+    name: jenkins
     namespace: jenkins
   spec:
     type: NodePort
     selector:
-      app: master
+      name: jenkins-leader
     ports:
       - protocol: TCP
         port: 8080
         targetPort: 8080
-        nodePort: 31357 #指定集群外部通过node端口访问UI服务 
+        nodePort: 31357
         name: ui
-# [END jenkins_service_ui]
-# [START jenkins_service_discovery]
-# 用于slave连接master
----
-  kind: Service
-  apiVersion: v1
-  metadata:
-    name: jenkins-discovery
-    namespace: jenkins
-  spec:
-    selector:
-      app: master
-    ports:
       - protocol: TCP
         port: 50000
         targetPort: 50000
-        nodePort: 50000 
         name: slaves
-# [END jenkins_service_discovery]
