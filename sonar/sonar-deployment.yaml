@@ -1,0 +1,26 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: sonarqube
+  namespace: mysql
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: sonarqube
+      labels:
+        app: sonar
+    spec:
+      containers:
+        - image: sonarqube:latest
+          name: sonarqube
+          env:
+            - name: SONARQUBE_JDBC_USERNAME
+              value: sonar
+            - name: SONARQUBE_JDBC_PASSWORD
+              value: sonar
+            - name: SONARQUBE_JDBC_URL
+              value: jdbc:postgresql://sonar-postgres.mysql:5432/sonar
+          ports:
+            - containerPort: 9000
+              name: sonarqube

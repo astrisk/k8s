@@ -1,0 +1,38 @@
+apiVersion:  apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: sonar-postgres
+  namespace: mysql
+spec:
+  serviceName: "sonar-postgres"
+  replicas: 1
+  template:
+    metadata:
+      name: sonar-postgres
+      labels:
+        app: sonar-postgres
+    spec:
+      containers:
+        - name: sonar-postgres
+          image: postgres:latest
+          env:
+            - name: POSTGRES_PASSWORD
+              value: sonar
+            - name: POSTGRES_USER
+              value: sonar
+          ports:
+            - containerPort: 5432
+              name: postgresport
+          volumeMounts:
+            - name: postgres
+              mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+  - metadata:
+      name: postgres
+      annotations:
+        volume.beta.kubernetes.io/storage-class: "nfs-storage"
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 50Gi
