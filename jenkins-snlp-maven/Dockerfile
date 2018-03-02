@@ -6,7 +6,7 @@ USER root
 RUN apk add --no-cache curl tar bash
 
 ARG MAVEN_VERSION=3.3.9
-ARG USER_HOME_DIR="/jenkins"
+ARG USER_HOME_DIR="/home/jenkins"
 ARG SHA=6e3e9c949ab4695a204f74038717aa7b2689b1be94875899ac1b3fe42800ff82
 ARG BASE_URL=https://apache.osuosl.org/maven/maven-3/${MAVEN_VERSION}/binaries
 
