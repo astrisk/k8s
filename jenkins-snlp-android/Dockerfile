@@ -15,7 +15,10 @@ ENV PATH ${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools:$PATH
 RUN mkdir /home/jenkins/.gradle
 VOLUME /home/jenkins/.gradle
 
-RUN mkdir /home/jenkins/.android/ && touch /home/jenkins/.android/repositories.cfgs
+RUN mkdir /home/jenkins/android-target
+VOLUME /home/jenkins/android-target
+
+RUN mkdir /home/jenkins/.android/ && touch /home/jenkins/.android/repositories.cfgs 
 
 ENV GRADLE_USER_HOME /home/jenkins/.gradle
 

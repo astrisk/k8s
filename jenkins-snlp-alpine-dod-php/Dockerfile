@@ -157,11 +157,28 @@ RUN set -xe \
 
 COPY docker-php-ext-* docker-php-entrypoint /usr/local/bin/
 
+RUN apk add openssh
+
 # Install composer global bin
 RUN curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer
 
-#USER jenkins
+USER root
+
+RUN mkdir /root/.ssh/ && \
+	echo "StrictHostKeyChecking no" >  /root/.ssh/config
+COPY id_rs*  /root/.ssh/
+
+
+WORKDIR /usr/local
+
+COPY sonar-scanner-cli-3.0.3.778-linux.zip  /usr/local/
+
+RUN unzip /usr/local/sonar-scanner-cli-3.0.3.778-linux.zip   
+RUN echo "sonar.host.url=http://sonar.mysql:9000" >>  /usr/local/sonar-scanner-3.0.3.778-linux/conf/sonar-scanner.properties && \ 
+	sed -i 's/use_embedded_jre=true/use_embedded_jre=false/g' /usr/local/sonar-scanner-3.0.3.778-linux/bin/sonar-scanner && \
+	cp /usr/local/sonar-scanner-3.0.3.778-linux/bin/sonar-scanner /usr/local/bin  && \ 
+	rm -rf /usr/local/sonar-scanner-cli-3.0.3.778-linux.zip 
 
 WORKDIR /home/jenkins
 
